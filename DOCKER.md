@@ -27,10 +27,10 @@ Open <http://localhost:3000>.
 
 What the compose file does:
 
-- **`image:` + `build:`** — `image:` points at a prebuilt registry image; the
-  `build:` block is a fallback. `docker compose up -d` uses the registry image
-  if it's available locally or pullable, otherwise builds from the local
-  `Dockerfile`. Run `docker compose pull` to fetch the latest published image.
+- **`build:`** — compose builds the image locally from the `Dockerfile`, so
+  you always run the code you just cloned. To run the prebuilt registry image
+  instead, add `image: ghcr.io/simplifaisoul/osiris:latest` to the `osiris`
+  service and drop the `build:` block.
 - **`env_file: .env` (`required: false`)** — if a `.env` file exists its
   values are injected into the container; if it's missing, OSIRIS still starts
   with the keyless feeds.
@@ -43,7 +43,6 @@ What the compose file does:
 Common commands:
 
 ```bash
-docker compose pull             # fetch latest published image
 docker compose logs -f          # follow logs
 docker compose up -d --build    # rebuild locally after pulling new code
 docker compose down             # stop & remove
@@ -51,21 +50,18 @@ docker compose down             # stop & remove
 
 ### Pull the prebuilt image from GHCR
 
-A prebuilt multi-arch-friendly image is published to the GitHub Container
-Registry, so you can run OSIRIS without building anything:
+A prebuilt image for `linux/amd64` and `linux/arm64` is published to the GitHub
+Container Registry on every push to `master` and every `v*.*.*` tag, so you can
+run OSIRIS without building anything:
 
 ```bash
-docker pull ghcr.io/aiacos/osiris:latest      # or a pinned tag, e.g. :0.1.0
+docker pull ghcr.io/simplifaisoul/osiris:latest   # or a pinned tag, e.g. :0.1.0
 docker run -d --name osiris \
   -p 3005:3000 --env-file .env --restart unless-stopped \
-  ghcr.io/aiacos/osiris:latest
+  ghcr.io/simplifaisoul/osiris:latest
 ```
 
-> If the package is **private**, authenticate first with a GitHub token that
-> has `read:packages`:
-> `echo $TOKEN | docker login ghcr.io -u <github-user> --password-stdin`.
-> Make it public from the package's **Settings → Danger Zone → Change
-> visibility** to allow anonymous pulls.
+The package is public — no `docker login` is required to pull it.
 
 ### Plain `docker run`
 
@@ -106,8 +102,8 @@ metadata.
 > CasaOS stores imported compose files under `/var/lib/casaos/apps/`, so a
 > relative `build:` context may not resolve there. If importing the YAML
 > directly, either build/tag `osiris:latest` first
-> (`docker build -t osiris:latest /path/to/osiris`) or set `image:` to a
-> prebuilt registry image.
+> (`docker build -t osiris:latest /path/to/osiris`) or replace the `build:`
+> block with `image: ghcr.io/simplifaisoul/osiris:latest`.
 
 ---
 
@@ -137,6 +133,28 @@ them only if you extend the relevant route or hit rate limits.
 | `OPENSKY_CLIENT_ID` / `OPENSKY_CLIENT_SECRET` | OpenSky aviation | Create an account at <https://opensky-network.org/>, open **Account → API client**, create a client and copy id/secret. **OAuth2 only since March 2025** (username/password auth removed). |
 | `N2YO_API_KEY` | N2YO satellites | Register at <https://www.n2yo.com/login/register/>, then **Profile → generate API key**. Limit 1000 req / hour; key can't be regenerated. |
 | `AIS_API_KEY` | aisstream.io maritime | Sign up at <https://aisstream.io/>, create a key on the **API Keys** page. Used over `wss://stream.aisstream.io/v0/stream`. |
+
+### Optional keys for Live Transit
+
+The **Live Buses & Transit** layer needs no key: it reads 185 operators' own
+GTFS-Realtime feeds, including all of Great Britain and New York City. Each
+variable below adds an operator that publishes only behind a free sign-up. The
+key stays on the server; without it that operator is simply not shown.
+
+| Variable | Adds | Get a key |
+|----------|------|-----------|
+| `TRANSIT_WMATA_KEY` | Washington DC Metrobus and Metrorail | <https://developer.wmata.com/> |
+| `TRANSIT_511_KEY` | San Francisco Bay Area, every operator | <https://511.org/open-data/token> |
+| `TRANSIT_TRIMET_KEY` | Portland TriMet | <https://developer.trimet.org/appid/registration/> |
+| `TRANSIT_TRANSLINK_KEY` | Metro Vancouver TransLink buses (a key allows 1,000 requests a day, so it is read every 90 s) | <https://developer.translink.ca/Account/Register> |
+| `TRANSIT_STM_KEY` | Montréal STM | <https://portail.developpeurs.stm.info/> |
+| `TRANSIT_NTA_KEY` | All of Ireland | <https://developer.nationaltransport.ie/> |
+| `TRANSIT_TRAFIKLAB_KEY` | Stockholm SL | <https://developer.trafiklab.se/> |
+| `TRANSIT_TFNSW_KEY` | Sydney buses, trains, metro, ferries and light rail | <https://opendata.transport.nsw.gov.au/> |
+| `TRANSIT_METLINK_KEY` | Wellington Metlink | <https://opendata.metlink.org.nz/> |
+| `TRANSIT_AT_KEY` | Auckland Transport | <https://dev-portal.at.govt.nz/> |
+
+A refused key shows as "key refused" on that operator in `/api/transit`.
 
 > Keep `.env` out of version control — it is already in `.gitignore`. Only
 > `.env.template` (no secrets) is committed.

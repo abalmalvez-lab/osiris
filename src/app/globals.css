@@ -7,6 +7,8 @@
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
+  --gold-rgb: 212, 175, 55;
+  --cyan-rgb: 0, 229, 255;
   /* ── Core Palette ── */
   --bg-void: #04040A;
   --bg-primary: #06060C;
@@ -19,12 +21,12 @@
   --gold-primary: #D4AF37;
   --gold-light: #F0D060;
   --gold-dim: #8B7325;
-  --gold-glow: rgba(212, 175, 55, 0.3);
+  --gold-glow: rgba(var(--gold-rgb), 0.3);
 
   /* ── Cyan Intel Stream ── */
   --cyan-primary: #00E5FF;
   --cyan-dim: #006B7A;
-  --cyan-glow: rgba(0, 229, 255, 0.15);
+  --cyan-glow: rgba(var(--cyan-rgb), 0.15);
 
   /* ── Alert Colors ── */
   --alert-red: #FF3D3D;
@@ -36,11 +38,31 @@
   --accent-weather: #E040FB;
   --accent-nuclear: #76FF03;
 
+  /* ── Map Layers ──
+     What the map itself draws with. Mirrored in src/lib/map-palette.ts, which
+     reads these back; the two copies are pinned together by its tests. */
+  --map-cctv: #00e676;
+  --map-sat-comms: #00e676;
+  --map-sat-military: #ff3d3d;
+  --map-sat-navigation: #448aff;
+  --map-sat-earth: #90ee90;
+  --map-sat-science: #ffd700;
+  --map-sat-other: #00e5ff;
+  --map-flight-civil: #00e5ff;
+  --map-flight-private: #ffd700;
+  --map-flight-gov: #ff9500;
+  --map-flight-military: #ff0000;
+  --map-flight-unknown: #546e7a;
+  --map-oi-support: #b388ff;
+  --map-oi-oppose: #ff5ccb;
+  --map-oi-neutral: #8c7cff;
+  --map-net-intel: #000000;
+
   /* ── Borders ── */
-  --border-primary: rgba(212, 175, 55, 0.15);
-  --border-secondary: rgba(212, 175, 55, 0.08);
-  --border-active: rgba(212, 175, 55, 0.4);
-  --border-cyan: rgba(0, 229, 255, 0.2);
+  --border-primary: rgba(var(--gold-rgb), 0.15);
+  --border-secondary: rgba(var(--gold-rgb), 0.08);
+  --border-active: rgba(var(--gold-rgb), 0.4);
+  --border-cyan: rgba(var(--cyan-rgb), 0.2);
 
   /* ── Text ── */
   --text-primary: #E8E6E0;
@@ -51,11 +73,11 @@
   --text-cyan: #00E5FF;
 
   /* ── Scrollbar ── */
-  --scrollbar-thumb: rgba(212, 175, 55, 0.2);
-  --scrollbar-thumb-hover: rgba(212, 175, 55, 0.4);
+  --scrollbar-thumb: rgba(var(--gold-rgb), 0.2);
+  --scrollbar-thumb-hover: rgba(var(--gold-rgb), 0.4);
 
   /* ── Hover ── */
-  --hover-accent: rgba(212, 175, 55, 0.08);
+  --hover-accent: rgba(var(--gold-rgb), 0.08);
 
   /* ── Fonts ── */
   --font-hud: 'JetBrains Mono', 'Courier New', monospace;
@@ -64,6 +86,64 @@
   /* ── Spacing (responsive) ── */
   --panel-gap: 12px;
   --edge-pad: 20px;
+}
+
+/* 🔥
+   THEME TRANSITION SYSTEM
+   🔥 */
+* {
+  transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME: GHOST PROTOCOL (DEEP VIOLET / PHANTOM OPS)
+   ═══════════════════════════════════════════════════════════════ */
+body.theme-ghost {
+  --gold-rgb: 179, 136, 255;
+  --cyan-rgb: 124, 77, 255;
+  --bg-void: #05000F;
+  --bg-primary: #08001A;
+  --bg-secondary: #0D0025;
+  --bg-tertiary: #140033;
+  --bg-panel: rgba(8, 0, 26, 0.92);
+  --bg-panel-solid: #0D0025;
+
+  --gold-primary: #B388FF;
+  --gold-light: #D1C4E9;
+  --gold-dim: #6A1B9A;
+  --gold-glow: rgba(179, 136, 255, 0.3);
+
+  --cyan-primary: #7C4DFF;
+  --cyan-dim: #4A148C;
+  --cyan-glow: rgba(124, 77, 255, 0.2);
+
+  --border-primary: rgba(179, 136, 255, 0.2);
+  --border-secondary: rgba(179, 136, 255, 0.08);
+  --border-active: rgba(179, 136, 255, 0.45);
+  --border-cyan: rgba(124, 77, 255, 0.25);
+
+  --text-primary: #E1BEE7;
+  --text-secondary: #9575CD;
+  --text-muted: #4A148C;
+  --text-heading: #B388FF;
+  --text-gold: #B388FF;
+  --text-cyan: #7C4DFF;
+
+  --scrollbar-thumb: rgba(179, 136, 255, 0.25);
+  --scrollbar-thumb-hover: rgba(179, 136, 255, 0.5);
+  --hover-accent: rgba(179, 136, 255, 0.1);
+
+  /* Phantom pulls the map's own layers into the violet range too. The
+     satellite entries are deliberately left alone: they are the signal that
+     nobody has overridden that category, so the feed's mission colours show. */
+  --map-cctv: #b388ff;
+  --map-flight-civil: #b388ff;
+  --map-flight-private: #ce93d8;
+  --map-flight-gov: #d500f9;
+  --map-flight-unknown: #b388ff;
 }
 
 @theme inline {
@@ -88,6 +168,33 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ── Scrollable document pages (docs) ──
+   The rules above lock the viewport for the fullscreen map. Long-form pages
+   opt out by rendering .docs-root, which releases the lock without affecting
+   the map. */
+html:has(.docs-root),
+html:has(.docs-root) body {
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.docs-root),
+  html:has(.docs-root) body { scroll-behavior: auto; }
+}
+
+/* ── Docs code tokens ── */
+.docs-code { color: #C9D1D9; }
+.docs-code .tok-key { color: var(--gold-primary); }
+.docs-code .tok-str { color: #A5D6A7; }
+.docs-code .tok-num { color: #F0D060; }
+.docs-code .tok-lit { color: #B388FF; }
+.docs-code .tok-kw  { color: #FF7B9C; }
+.docs-code .tok-fn  { color: var(--cyan-primary); }
+.docs-code .tok-com { color: #5C5A54; font-style: italic; }
+
 /* ── Scrollbar ── */
 .styled-scrollbar::-webkit-scrollbar { width: 3px; }
 .styled-scrollbar::-webkit-scrollbar-track { background: transparent; }
@@ -106,13 +213,13 @@ html, body {
   border-radius: 14px;
   box-shadow:
     0 4px 30px rgba(0, 0, 0, 0.5),
-    0 1px 0 rgba(212, 175, 55, 0.06) inset,
+    0 1px 0 rgba(var(--gold-rgb), 0.06) inset,
     0 -1px 0 rgba(0, 0, 0, 0.3) inset;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-panel:hover {
-  border-color: rgba(212, 175, 55, 0.22);
+  border-color: rgba(var(--gold-rgb), 0.22);
 }
 
 .glass-panel-sm {
@@ -126,15 +233,15 @@ html, body {
 /* ── Osiris Gold Glow ── */
 .osiris-glow {
   box-shadow:
-    0 0 20px rgba(212, 175, 55, 0.12),
-    0 0 60px rgba(212, 175, 55, 0.06),
+    0 0 20px rgba(var(--gold-rgb), 0.12),
+    0 0 60px rgba(var(--gold-rgb), 0.06),
     0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .osiris-glow-cyan {
   box-shadow:
-    0 0 20px rgba(0, 229, 255, 0.1),
-    0 0 60px rgba(0, 229, 255, 0.05);
+    0 0 20px rgba(var(--cyan-rgb), 0.1),
+    0 0 60px rgba(var(--cyan-rgb), 0.05);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -181,8 +288,8 @@ html, body {
 }
 
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
-  50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 40px rgba(212, 175, 55, 0.2); }
+  0%, 100% { box-shadow: 0 0 5px rgba(var(--gold-rgb), 0.3); }
+  50% { box-shadow: 0 0 20px rgba(var(--gold-rgb), 0.6), 0 0 40px rgba(var(--gold-rgb), 0.2); }
 }
 
 @keyframes data-pulse {
@@ -234,13 +341,13 @@ html, body {
   background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer; transition: all 0.3s ease; flex-shrink: 0;
 }
-.layer-toggle.active { background: rgba(212, 175, 55, 0.25); border-color: var(--gold-primary); }
+.layer-toggle.active { background: rgba(var(--gold-rgb), 0.25); border-color: var(--gold-primary); }
 .layer-toggle::after {
   content: ''; position: absolute; top: 1px; left: 1px;
   width: 10px; height: 10px; border-radius: 50%;
   background: var(--text-muted); transition: all 0.3s ease;
 }
-.layer-toggle.active::after { left: 15px; background: var(--gold-primary); box-shadow: 0 0 8px rgba(212, 175, 55, 0.5); }
+.layer-toggle.active::after { left: 15px; background: var(--gold-primary); box-shadow: 0 0 8px rgba(var(--gold-rgb), 0.5); }
 
 /* ── Risk Badges ── */
 .risk-critical { color: #FF3D3D; text-shadow: 0 0 8px rgba(255, 61, 61, 0.5); }
@@ -278,7 +385,7 @@ html, body {
 
 .mobile-drawer-handle {
   width: 36px; height: 4px;
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(var(--gold-rgb), 0.3);
   border-radius: 4px;
   margin: 8px auto 8px;
 }
@@ -316,7 +423,7 @@ html, body {
 
 .mobile-nav-btn.active {
   color: var(--gold-primary);
-  background: rgba(212, 175, 55, 0.1);
+  background: rgba(var(--gold-rgb), 0.1);
 }
 
 .mobile-nav-btn svg {
@@ -431,9 +538,9 @@ html, body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(212, 175, 55, 0.06) 25%,
-    rgba(212, 175, 55, 0.12) 50%,
-    rgba(212, 175, 55, 0.06) 75%,
+    rgba(var(--gold-rgb), 0.06) 25%,
+    rgba(var(--gold-rgb), 0.12) 50%,
+    rgba(var(--gold-rgb), 0.06) 75%,
     transparent 100%
   );
   transform: translateX(-100%);
@@ -452,7 +559,7 @@ html, body {
   border-radius: 14px;
   box-shadow:
     0 4px 30px rgba(0, 0, 0, 0.5),
-    0 1px 0 rgba(212, 175, 55, 0.06) inset,
+    0 1px 0 rgba(var(--gold-rgb), 0.06) inset,
     0 -1px 0 rgba(0, 0, 0, 0.3) inset;
   transition:
     transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -466,8 +573,8 @@ html, body {
   border-color: var(--border-active);
   box-shadow:
     0 8px 40px rgba(0, 0, 0, 0.6),
-    0 0 30px rgba(212, 175, 55, 0.08),
-    0 1px 0 rgba(212, 175, 55, 0.1) inset,
+    0 0 30px rgba(var(--gold-rgb), 0.08),
+    0 1px 0 rgba(var(--gold-rgb), 0.1) inset,
     0 -1px 0 rgba(0, 0, 0, 0.3) inset;
 }
 
@@ -524,6 +631,66 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   CCTV MAP PREVIEWS
+   The live frames pinned to camera markers past zoom 13.
+   ───────────────────────────────────────────────────────────── */
+.cctv-tile {
+  transform-origin: 50% 100%;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), filter 0.18s ease;
+}
+.cctv-tile:hover,
+.cctv-tile:focus-visible {
+  /* Lifting rather than scaling: a scaled tile resamples the frame inside it,
+     and at this size that reads as the camera going soft. */
+  transform: translateY(-3px);
+  filter: brightness(1.12) drop-shadow(0 0 10px color-mix(in srgb, var(--map-cctv) 30%, transparent));
+}
+
+/* `place()` writes data-flip on the wrapper once it knows whether the tile
+   had room above its marker. Only the stem on the marker's side is drawn. */
+[data-flip="above"] .cctv-stem-up,
+[data-flip="below"] .cctv-stem-down,
+[data-flip="none"] .cctv-stem { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cctv-tile { transition: none; }
+  .cctv-tile:hover, .cctv-tile:focus-visible { transform: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LIVE TV NEWS PREVIEWS
+   The same tile as the CCTV previews, but pinned to broadcast
+   feeds and drawn at every zoom — see components/LiveNewsPreviews.
+   ───────────────────────────────────────────────────────────── */
+.news-tile {
+  transform-origin: 50% 100%;
+  transition: filter 0.18s ease;
+}
+.news-tile:hover {
+  filter: brightness(1.1) drop-shadow(0 0 12px color-mix(in srgb, #EC407A 32%, transparent));
+}
+
+[data-flip="above"] .news-stem-up,
+[data-flip="below"] .news-stem-down,
+[data-flip="none"] .news-stem { display: none; }
+
+/* The on-air dot, blinking like the malware arrival beacon so that "live"
+   reads the same way wherever it appears on the map. */
+.news-live-dot {
+  animation: news-live-blink 1.6s ease-in-out infinite;
+}
+@keyframes news-live-blink {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px #EC407A; }
+  50%      { opacity: 0.3; box-shadow: 0 0 2px #EC407A; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-tile { transition: none; }
+  .news-tile:hover { filter: none; }
+  .news-live-dot { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
    4. SCANNING LINE — Vertical sweep for splash/loading screens
    ───────────────────────────────────────────────────────────── */
 @keyframes scan-line-sweep {
@@ -558,8 +725,8 @@ html, body {
     transparent 100%
   );
   box-shadow:
-    0 0 15px rgba(0, 229, 255, 0.4),
-    0 0 45px rgba(0, 229, 255, 0.15);
+    0 0 15px rgba(var(--cyan-rgb), 0.4),
+    0 0 45px rgba(var(--cyan-rgb), 0.15);
   animation: scan-line-sweep 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   will-change: transform, opacity;
   z-index: 10;
@@ -575,8 +742,8 @@ html, body {
     transparent 100%
   );
   box-shadow:
-    0 0 15px rgba(212, 175, 55, 0.4),
-    0 0 45px rgba(212, 175, 55, 0.15);
+    0 0 15px rgba(var(--gold-rgb), 0.4),
+    0 0 45px rgba(var(--gold-rgb), 0.15);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -589,29 +756,29 @@ html, body {
   color: var(--gold-primary);
   text-shadow:
     0 0 8px var(--gold-glow),
-    0 0 20px rgba(212, 175, 55, 0.15);
+    0 0 20px rgba(var(--gold-rgb), 0.15);
   transition: text-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stat-value-glow:hover {
   text-shadow:
     0 0 12px var(--gold-glow),
-    0 0 30px rgba(212, 175, 55, 0.25),
-    0 0 50px rgba(212, 175, 55, 0.1);
+    0 0 30px rgba(var(--gold-rgb), 0.25),
+    0 0 50px rgba(var(--gold-rgb), 0.1);
 }
 
 .stat-value-glow--cyan {
   color: var(--cyan-primary);
   text-shadow:
     0 0 8px var(--cyan-glow),
-    0 0 20px rgba(0, 229, 255, 0.15);
+    0 0 20px rgba(var(--cyan-rgb), 0.15);
 }
 
 .stat-value-glow--cyan:hover {
   text-shadow:
     0 0 12px var(--cyan-glow),
-    0 0 30px rgba(0, 229, 255, 0.25),
-    0 0 50px rgba(0, 229, 255, 0.1);
+    0 0 30px rgba(var(--cyan-rgb), 0.25),
+    0 0 50px rgba(var(--cyan-rgb), 0.1);
 }
 
 .stat-value-glow--alert {
@@ -637,7 +804,7 @@ html, body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-primary);
-  background: rgba(212, 175, 55, 0.08);
+  background: rgba(var(--gold-rgb), 0.08);
   border: 1px solid var(--border-primary);
   border-radius: 8px;
   padding: 10px 20px;
@@ -651,11 +818,11 @@ html, body {
 }
 
 .btn-tactical:hover {
-  background: rgba(212, 175, 55, 0.14);
+  background: rgba(var(--gold-rgb), 0.14);
   border-color: var(--border-active);
   box-shadow:
-    0 0 20px rgba(212, 175, 55, 0.12),
-    0 0 50px rgba(212, 175, 55, 0.06);
+    0 0 20px rgba(var(--gold-rgb), 0.12),
+    0 0 50px rgba(var(--gold-rgb), 0.06);
 }
 
 .btn-tactical:active {
@@ -673,16 +840,16 @@ html, body {
 }
 
 .btn-tactical--cyan {
-  background: rgba(0, 229, 255, 0.08);
+  background: rgba(var(--cyan-rgb), 0.08);
   border-color: var(--border-cyan);
 }
 
 .btn-tactical--cyan:hover {
-  background: rgba(0, 229, 255, 0.14);
-  border-color: rgba(0, 229, 255, 0.4);
+  background: rgba(var(--cyan-rgb), 0.14);
+  border-color: rgba(var(--cyan-rgb), 0.4);
   box-shadow:
-    0 0 20px rgba(0, 229, 255, 0.1),
-    0 0 50px rgba(0, 229, 255, 0.05);
+    0 0 20px rgba(var(--cyan-rgb), 0.1),
+    0 0 50px rgba(var(--cyan-rgb), 0.05);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -746,8 +913,8 @@ html, body {
 }
 
 @keyframes threat-pulse-elevated {
-  0%, 100% { box-shadow: 0 0 4px rgba(212, 175, 55, 0.25); }
-  50% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
+  0%, 100% { box-shadow: 0 0 4px rgba(var(--gold-rgb), 0.25); }
+  50% { box-shadow: 0 0 10px rgba(var(--gold-rgb), 0.4); }
 }
 
 [class^="threat-badge-"],
@@ -781,8 +948,8 @@ html, body {
 
 .threat-badge-elevated {
   color: var(--gold-primary);
-  background: rgba(212, 175, 55, 0.08);
-  border-color: rgba(212, 175, 55, 0.2);
+  background: rgba(var(--gold-rgb), 0.08);
+  border-color: rgba(var(--gold-rgb), 0.2);
   animation: threat-pulse-elevated 3s ease-in-out infinite;
 }
 
@@ -814,14 +981,14 @@ html, body {
   background: var(--hover-accent);
   border-color: var(--border-primary);
   color: var(--text-primary);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.06);
+  box-shadow: 0 0 12px rgba(var(--gold-rgb), 0.06);
 }
 
 .data-grid-cell--active {
-  background: rgba(212, 175, 55, 0.06);
+  background: rgba(var(--gold-rgb), 0.06);
   border-color: var(--border-active);
   color: var(--gold-primary);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.08);
+  box-shadow: 0 0 15px rgba(var(--gold-rgb), 0.08);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -853,7 +1020,7 @@ html, body {
   border-radius: 8px;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(212, 175, 55, 0.06);
+    0 0 12px rgba(var(--gold-rgb), 0.06);
   white-space: nowrap;
   pointer-events: none;
   animation: tooltip-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -881,10 +1048,10 @@ html, body {
 }
 
 .hud-tooltip--gold {
-  border-color: rgba(212, 175, 55, 0.3);
+  border-color: rgba(var(--gold-rgb), 0.3);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(212, 175, 55, 0.1);
+    0 0 20px rgba(var(--gold-rgb), 0.1);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -994,17 +1161,17 @@ html, body {
 }
 
 .layer-toggle-premium.active {
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(var(--gold-rgb), 0.2);
   border-color: var(--gold-primary);
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 16px rgba(var(--gold-rgb), 0.15);
 }
 
 .layer-toggle-premium.active::after {
   transform: translateX(20px);
   background: var(--gold-primary);
   box-shadow:
-    0 0 10px rgba(212, 175, 55, 0.6),
-    0 0 25px rgba(212, 175, 55, 0.2);
+    0 0 10px rgba(var(--gold-rgb), 0.6),
+    0 0 25px rgba(var(--gold-rgb), 0.2);
 }
 
 /* Glow trail on active toggle */
@@ -1018,23 +1185,23 @@ html, body {
   border-radius: 6px;
   background: linear-gradient(
     90deg,
-    rgba(212, 175, 55, 0.05),
-    rgba(212, 175, 55, 0.15)
+    rgba(var(--gold-rgb), 0.05),
+    rgba(var(--gold-rgb), 0.15)
   );
   pointer-events: none;
 }
 
 .layer-toggle-premium--cyan.active {
-  background: rgba(0, 229, 255, 0.15);
+  background: rgba(var(--cyan-rgb), 0.15);
   border-color: var(--cyan-primary);
-  box-shadow: 0 0 16px rgba(0, 229, 255, 0.12);
+  box-shadow: 0 0 16px rgba(var(--cyan-rgb), 0.12);
 }
 
 .layer-toggle-premium--cyan.active::after {
   background: var(--cyan-primary);
   box-shadow:
-    0 0 10px rgba(0, 229, 255, 0.6),
-    0 0 25px rgba(0, 229, 255, 0.2);
+    0 0 10px rgba(var(--cyan-rgb), 0.6),
+    0 0 25px rgba(var(--cyan-rgb), 0.2);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1129,7 +1296,7 @@ html, body {
   inset: 0;
   background-image: radial-gradient(
     circle,
-    rgba(212, 175, 55, 0.12) 1px,
+    rgba(var(--gold-rgb), 0.12) 1px,
     transparent 1px
   );
   background-size: 24px 24px;
@@ -1145,7 +1312,7 @@ html, body {
 .particle-grid--cyan::before {
   background-image: radial-gradient(
     circle,
-    rgba(0, 229, 255, 0.08) 1px,
+    rgba(var(--cyan-rgb), 0.08) 1px,
     transparent 1px
   );
 }
@@ -1235,27 +1402,27 @@ html, body {
 }
 .splash-ring--outer {
   width: 140px; height: 140px;
-  border-color: rgba(212,175,55,0.25);
+  border-color: rgba(var(--gold-rgb),0.25);
   border-top-color: var(--gold-primary);
   animation: splash-ring-outer 3s linear infinite;
 }
 .splash-ring--mid {
   width: 110px; height: 110px;
-  border-color: rgba(212,175,55,0.12);
-  border-right-color: rgba(212,175,55,0.6);
+  border-color: rgba(var(--gold-rgb),0.12);
+  border-right-color: rgba(var(--gold-rgb),0.6);
   animation: splash-ring-mid 5s linear infinite;
 }
 .splash-ring--inner {
   width: 80px; height: 80px;
-  border-color: rgba(0,229,255,0.1);
-  border-bottom-color: rgba(0,229,255,0.5);
+  border-color: rgba(var(--cyan-rgb),0.1);
+  border-bottom-color: rgba(var(--cyan-rgb),0.5);
   animation: splash-ring-inner 4s linear infinite;
 }
 .splash-ring--core {
   width: 40px; height: 40px;
-  background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--gold-rgb),0.4) 0%, transparent 70%);
   border: 2px solid var(--gold-primary);
-  box-shadow: 0 0 30px rgba(212,175,55,0.4), 0 0 60px rgba(212,175,55,0.15), inset 0 0 20px rgba(212,175,55,0.2);
+  box-shadow: 0 0 30px rgba(var(--gold-rgb),0.4), 0 0 60px rgba(var(--gold-rgb),0.15), inset 0 0 20px rgba(var(--gold-rgb),0.2);
 }
 .splash-ring--core::after {
   content: '';
@@ -1271,7 +1438,7 @@ html, body {
   top: 0; left: 0; right: 0;
   height: 2px;
   background: linear-gradient(90deg, transparent 0%, var(--gold-primary) 30%, var(--cyan-primary) 70%, transparent 100%);
-  box-shadow: 0 0 20px var(--gold-primary), 0 0 60px rgba(212,175,55,0.3);
+  box-shadow: 0 0 20px var(--gold-primary), 0 0 60px rgba(var(--gold-rgb),0.3);
   animation: splash-scanline 2.5s ease-in-out;
   pointer-events: none;
   z-index: 10;
@@ -1293,7 +1460,7 @@ html, body {
   background: linear-gradient(180deg, rgba(15,15,20,0.95) 0%, rgba(8,10,20,0.9) 100%);
   border-bottom: 1px solid;
   border-image: linear-gradient(90deg, transparent 0%, var(--border-primary) 20%, var(--border-active) 50%, var(--border-primary) 80%, transparent 100%) 1;
-  box-shadow: 0 1px 0 rgba(212,175,55,0.05) inset, 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 0 rgba(var(--gold-rgb),0.05) inset, 0 4px 20px rgba(0,0,0,0.4);
   font-family: var(--font-hud);
 }
 
@@ -1310,7 +1477,7 @@ html, body {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--text-heading);
-  text-shadow: 0 0 12px rgba(212,175,55,0.3);
+  text-shadow: 0 0 12px rgba(var(--gold-rgb),0.3);
   line-height: 1;
 }
 .gotham-stat__label {
@@ -1337,10 +1504,10 @@ html, body {
 }
 .gotham-tag--critical { background: rgba(255,61,61,0.12); color: #FF3D3D; border-color: rgba(255,61,61,0.3); }
 .gotham-tag--high { background: rgba(255,149,0,0.12); color: #FF9500; border-color: rgba(255,149,0,0.3); }
-.gotham-tag--medium { background: rgba(212,175,55,0.12); color: #D4AF37; border-color: rgba(212,175,55,0.3); }
+.gotham-tag--medium { background: rgba(var(--gold-rgb),0.12); color: #D4AF37; border-color: rgba(var(--gold-rgb),0.3); }
 .gotham-tag--low { background: rgba(0,230,118,0.12); color: #00E676; border-color: rgba(0,230,118,0.3); }
-.gotham-tag--info { background: rgba(0,229,255,0.08); color: var(--cyan-primary); border-color: rgba(0,229,255,0.2); }
-.gotham-tag--classified { background: rgba(212,175,55,0.08); color: var(--gold-primary); border-color: rgba(212,175,55,0.25); letter-spacing: 0.2em; }
+.gotham-tag--info { background: rgba(var(--cyan-rgb),0.08); color: var(--cyan-primary); border-color: rgba(var(--cyan-rgb),0.2); }
+.gotham-tag--classified { background: rgba(var(--gold-rgb),0.08); color: var(--gold-primary); border-color: rgba(var(--gold-rgb),0.25); letter-spacing: 0.2em; }
 
 /* ── Gotham Section Divider ── */
 .gotham-divider {
@@ -1411,7 +1578,7 @@ html, body {
   border-bottom: 1px solid transparent;
   /* Gradient border via background-image on pseudo-element */
   box-shadow:
-    0 1px 0 rgba(212, 175, 55, 0.08) inset,
+    0 1px 0 rgba(var(--gold-rgb), 0.08) inset,
     0 4px 24px rgba(0, 0, 0, 0.5),
     0 1px 3px rgba(0, 0, 0, 0.3);
   z-index: 500;
@@ -1450,7 +1617,7 @@ html, body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(212, 175, 55, 0.12),
+    rgba(var(--gold-rgb), 0.12),
     transparent
   );
   pointer-events: none;
@@ -1491,8 +1658,8 @@ html, body {
 .gotham-command-bar__action:hover {
   color: var(--gold-primary);
   border-color: var(--border-primary);
-  background: rgba(212, 175, 55, 0.06);
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.08);
+  background: rgba(var(--gold-rgb), 0.06);
+  box-shadow: 0 0 12px rgba(var(--gold-rgb), 0.08);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1511,7 +1678,7 @@ html, body {
   border-radius: 10px;
   box-shadow:
     0 2px 16px rgba(0, 0, 0, 0.35),
-    0 1px 0 rgba(212, 175, 55, 0.04) inset;
+    0 1px 0 rgba(var(--gold-rgb), 0.04) inset;
   transition:
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
@@ -1524,8 +1691,8 @@ html, body {
   border-left-color: var(--gold-primary);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.5),
-    0 0 24px rgba(212, 175, 55, 0.06),
-    0 1px 0 rgba(212, 175, 55, 0.08) inset;
+    0 0 24px rgba(var(--gold-rgb), 0.06),
+    0 1px 0 rgba(var(--gold-rgb), 0.08) inset;
 }
 
 .gotham-card:active {
@@ -1542,8 +1709,8 @@ html, body {
   border-left-color: var(--cyan-primary);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.5),
-    0 0 24px rgba(0, 229, 255, 0.05),
-    0 1px 0 rgba(0, 229, 255, 0.06) inset;
+    0 0 24px rgba(var(--cyan-rgb), 0.05),
+    0 1px 0 rgba(var(--cyan-rgb), 0.06) inset;
 }
 
 /* Variant: Alert accent for critical items */
@@ -1602,17 +1769,17 @@ html, body {
   line-height: 1;
   color: var(--text-heading);
   text-shadow:
-    0 0 10px rgba(212, 175, 55, 0.2),
-    0 0 30px rgba(212, 175, 55, 0.08);
+    0 0 10px rgba(var(--gold-rgb), 0.2),
+    0 0 30px rgba(var(--gold-rgb), 0.08);
   letter-spacing: -0.02em;
   transition: text-shadow 0.4s ease;
 }
 
 .gotham-stat:hover .gotham-stat__value {
   text-shadow:
-    0 0 14px rgba(212, 175, 55, 0.35),
-    0 0 40px rgba(212, 175, 55, 0.12),
-    0 0 60px rgba(212, 175, 55, 0.06);
+    0 0 14px rgba(var(--gold-rgb), 0.35),
+    0 0 40px rgba(var(--gold-rgb), 0.12),
+    0 0 60px rgba(var(--gold-rgb), 0.06);
 }
 
 .gotham-stat__value--gold {
@@ -1622,8 +1789,8 @@ html, body {
 .gotham-stat__value--cyan {
   color: var(--cyan-primary);
   text-shadow:
-    0 0 10px rgba(0, 229, 255, 0.2),
-    0 0 30px rgba(0, 229, 255, 0.08);
+    0 0 10px rgba(var(--cyan-rgb), 0.2),
+    0 0 30px rgba(var(--cyan-rgb), 0.08);
 }
 
 .gotham-stat__value--alert {
@@ -1802,13 +1969,13 @@ html, body {
 
 .gotham-tag-medium {
   color: var(--gold-primary);
-  background: rgba(212, 175, 55, 0.08);
-  border-color: rgba(212, 175, 55, 0.18);
+  background: rgba(var(--gold-rgb), 0.08);
+  border-color: rgba(var(--gold-rgb), 0.18);
 }
 
 .gotham-tag-medium:hover {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.28);
+  background: rgba(var(--gold-rgb), 0.12);
+  border-color: rgba(var(--gold-rgb), 0.28);
 }
 
 .gotham-tag-low {
@@ -2050,7 +2217,7 @@ html, body {
 }
 
 .gotham-sidebar__item--active {
-  background: rgba(212, 175, 55, 0.08);
+  background: rgba(var(--gold-rgb), 0.08);
   color: var(--gold-primary);
   border-left: 2px solid var(--gold-primary);
   padding-left: 10px;
@@ -2089,15 +2256,15 @@ html, body {
 /* Variant: Gold — active / primary */
 .gotham-badge--gold {
   color: var(--gold-primary);
-  background: rgba(212, 175, 55, 0.08);
-  border-color: rgba(212, 175, 55, 0.2);
+  background: rgba(var(--gold-rgb), 0.08);
+  border-color: rgba(var(--gold-rgb), 0.2);
 }
 
 /* Variant: Cyan — info / data */
 .gotham-badge--cyan {
   color: var(--cyan-primary);
-  background: rgba(0, 229, 255, 0.06);
-  border-color: rgba(0, 229, 255, 0.15);
+  background: rgba(var(--cyan-rgb), 0.06);
+  border-color: rgba(var(--cyan-rgb), 0.15);
 }
 
 /* Variant: Green — operational / live */
@@ -2195,4 +2362,279 @@ html, body {
   .gotham-card {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ── Range slider (World Remote) ── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  border: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(212,175,55,0.4);
+  border: 2px solid rgba(0,0,0,0.3);
+  transition: box-shadow 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 14px rgba(212,175,55,0.6);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(212,175,55,0.4);
+  border: 2px solid rgba(0,0,0,0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INSTRUMENT PANEL
+   Shared chrome for the tool panels — route planner, markets, and
+   anything else that should read as an instrument rather than a form.
+   Kept here rather than in each component so the panels cannot drift
+   apart, which is what makes a set of tools feel assembled instead of
+   designed.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Faint engineering grid. Sits under the content at very low contrast —
+   readable as texture, never as lines competing with the data. */
+/* Deliberately does NOT set `position`. These rules are appended after the
+   Tailwind utilities, so a `position: relative` here would beat a `fixed`
+   utility on the same element at equal specificity — which is exactly how the
+   markets panel stopped going fullscreen. The consumer owns positioning; this
+   only needs *some* positioned ancestor, which every panel already has. */
+.instrument-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(var(--gold-rgb), 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--gold-rgb), 0.045) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 65%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 65%);
+  border-radius: inherit;
+}
+
+/* Corner brackets. Four hairlines that frame a panel the way a sight or a
+   viewfinder does, without the cost of a full border. */
+.instrument-corners::after,
+.instrument-corners::before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  border-color: rgba(var(--gold-rgb), 0.45);
+}
+.instrument-corners::before {
+  top: 6px;
+  left: 6px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+.instrument-corners::after {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+/* Header treatment: an accent bar and a hairline rule that reads as a
+   masthead rather than a title. */
+.instrument-title {
+  font-family: var(--font-hud);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-heading);
+}
+
+.instrument-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--gold-rgb), 0.35) 0%,
+    rgba(var(--gold-rgb), 0.10) 40%,
+    transparent 100%
+  );
+}
+
+/* Small state chip — STANDBY / READY / LIVE. */
+.instrument-chip {
+  font-family: var(--font-hud);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+/* Monospace sample of an accepted input format, for empty states that would
+   otherwise just say "type something". */
+.instrument-sample {
+  font-family: var(--font-hud);
+  font-size: 10px;
+  color: var(--text-secondary);
+  background: rgba(var(--gold-rgb), 0.06);
+  border: 1px solid rgba(var(--gold-rgb), 0.12);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* OI's theatre takes the whole screen: the app's own HUD steps back until it closes. */
+html[data-oi-theater] [data-hud],
+html[data-oi-theater] [data-map-controls] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease;
+}
+
+/* ── OSIRIS OI: gold and black ──
+   The OI panel and workspace keep to two tones: gold leads (what is selected,
+   what is live, the prediction), champagne is its quiet second where the
+   platform would use cyan, and the surfaces are black rather than navy. In
+   Ghost they follow that theme's violets. The map and the arcs keep their own
+   colours (the arcs' are set in the Style Studio). Search and Directions
+   (.tool-*) share the same black surface and gold button. */
+:root {
+  --oi-alt: #E6D3A3;
+  --oi-alt-rgb: 230, 211, 163;
+  --oi-surface: rgba(9, 9, 9, 0.9);
+  --oi-solid: #0B0B0B;
+  --oi-raised: #141414;
+  --oi-label: #8C877C;
+  --tool-surface: rgba(10, 10, 10, 0.96);
+}
+body.theme-ghost {
+  --oi-alt: var(--cyan-primary);
+  --oi-alt-rgb: var(--cyan-rgb);
+  --oi-surface: var(--bg-panel);
+  --oi-solid: var(--bg-panel-solid);
+  --oi-raised: var(--bg-tertiary);
+  --oi-label: var(--text-secondary);
+  --tool-surface: var(--bg-panel-solid);
+}
+.oi-glass, .tool-glass {
+  background: var(--oi-surface);
+  border-color: rgba(var(--gold-rgb), 0.13);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(var(--gold-rgb), 0.07) inset;
+}
+.oi-glass:hover, .tool-glass:hover { border-color: rgba(var(--gold-rgb), 0.2); }
+/* The one filled button OI has: the action a view exists for. */
+.oi-btn-primary, .tool-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-family: var(--font-hud);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0B0B0B;
+  background: linear-gradient(180deg, var(--gold-light), var(--gold-primary));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 6px 18px rgba(var(--gold-rgb), 0.18);
+  transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.08s ease;
+}
+.oi-btn-primary:hover, .tool-btn-primary:hover { filter: brightness(1.06); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 8px 24px rgba(var(--gold-rgb), 0.28); }
+.oi-btn-primary:active, .tool-btn-primary:active { transform: scale(0.985); }
+.oi-btn-primary:focus-visible, .tool-btn-primary:focus-visible { outline: 2px solid rgba(var(--gold-rgb), 0.6); outline-offset: 2px; }
+.oi-btn-primary:disabled, .tool-btn-primary:disabled { color: rgba(var(--gold-rgb), 0.55); background: rgba(var(--gold-rgb), 0.08); box-shadow: inset 0 0 0 1px rgba(var(--gold-rgb), 0.2); filter: none; cursor: default; }
+/* The quiet button beside it: a gold outline. */
+.oi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 7px;
+  font-family: var(--font-hud);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  border: 1px solid rgba(var(--gold-rgb), 0.35);
+  background: rgba(var(--gold-rgb), 0.06);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.oi-btn:hover { background: rgba(var(--gold-rgb), 0.12); border-color: rgba(var(--gold-rgb), 0.55); }
+.oi-btn:focus-visible { outline: 2px solid rgba(var(--gold-rgb), 0.5); outline-offset: 2px; }
+.oi-btn:disabled { opacity: 0.4; pointer-events: none; }
+.oi-select option { background: var(--oi-solid); }
+/* Search and Directions sit over the busiest part of the map: nearly solid, so labels underneath never read through. */
+.tool-glass { background: var(--tool-surface); }
+/* Search: a line of gold runs under the box while a search is on its way. */
+@keyframes tool-scan { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+.tool-scan { background: linear-gradient(90deg, transparent, var(--gold-primary), transparent); animation: tool-scan 1.1s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .tool-scan { animation: none; opacity: 0.6; } }
+
+/* OI's research graph: marks fade in as the run finds them, an actor deciding its move pings.
+   Fading stroke-opacity leaves opacity to the dimming. */
+@keyframes oi-graph-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes oi-edge-in { from { stroke-opacity: 0; } to { stroke-opacity: 1; } }
+@keyframes oi-graph-ping { from { transform: scale(0.75); opacity: 0.9; } to { transform: scale(1.6); opacity: 0; } }
+g.oi-graph-in { animation: oi-graph-in 0.7s ease-out both; }
+path.oi-graph-in { animation: oi-edge-in 0.9s ease-out both; }
+.oi-graph-ping { transform-box: fill-box; transform-origin: center; animation: oi-graph-ping 1.6s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .oi-graph-ping { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CCTV VISION — AI Analyze on a camera (components/CameraVision)
+   The frame freezes under a scanning grid while the detector
+   reads it; then a sweep crosses it, lifting the veil, and each
+   box locks on as the line passes (its delay is --at).
+   ───────────────────────────────────────────────────────────── */
+.vision-sweep { transform-box: view-box; animation: vision-sweep var(--sweep, 1100ms) linear both; }
+.vision-sweep-loop { transform-box: view-box; animation: vision-sweep 1.6s linear infinite; }
+@keyframes vision-sweep {
+  from { transform: translateY(0); }
+  to   { transform: translateY(120%); }
+}
+.vision-lock { transform-box: fill-box; transform-origin: center; animation: vision-lock 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.15) var(--at, 0ms) both; }
+@keyframes vision-lock {
+  from { opacity: 0; transform: scale(1.6); }
+  50%  { opacity: 1; }
+  to   { opacity: 1; transform: scale(1); }
+}
+.vision-flash { animation: vision-flash 0.7s ease-out var(--at, 0ms) both; }
+@keyframes vision-flash {
+  from { opacity: 0; }
+  20%  { opacity: 0.4; }
+  to   { opacity: 0; }
+}
+.vision-chip { animation: vision-fade 0.4s ease-out calc(var(--at, 0ms) + 300ms) both; }
+@keyframes vision-fade { from { opacity: 0; } }
+.vision-region { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.vision-acquire { animation: vision-acquire 1.4s linear infinite; }
+@keyframes vision-acquire {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(500%); }
+}
+.vision-grow { transform-origin: left; animation: vision-grow var(--sweep, 1100ms) cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes vision-grow { from { transform: scaleX(0); } }
+.vision-rise { animation: vision-rise 0.45s ease-out both; }
+@keyframes vision-rise { from { opacity: 0; transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) {
+  .vision-sweep, .vision-sweep-loop, .vision-acquire { display: none; }
+  .vision-lock, .vision-flash, .vision-chip, .vision-grow, .vision-rise { animation: none; }
+  .vision-region { transition: none; }
 }

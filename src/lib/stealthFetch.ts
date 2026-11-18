@@ -75,6 +75,8 @@ export function stealthHeaders(extraHeaders?: Record<string, string>): Record<st
   return {
     'User-Agent': randomUA(),
     'Accept-Language': 'en-US,en;q=0.9',
+    'X-Forwarded-For': ip,
+    'X-Real-IP': ip,
     ...extraHeaders,
   };
 }
@@ -97,8 +99,19 @@ export async function stealthFetch(
     ) : undefined
   );
 
-  return fetch(url, {
-    ...init,
-    headers,
-  });
+  const controller = new AbortController();
+  if (init?.signal) {
+    init.signal.addEventListener('abort', () => controller.abort());
+  }
+
+  const timeoutId = setTimeout(() => controller.abort(new Error('stealthFetch Hard Timeout')), 30000);
+
+  try {
+    const res = await fetch(url, { ...init, headers, signal: controller.signal });
+    clearTimeout(timeoutId);
+    return res;
+  } catch (err) {
+    clearTimeout(timeoutId);
+    throw err;
+  }
 }
